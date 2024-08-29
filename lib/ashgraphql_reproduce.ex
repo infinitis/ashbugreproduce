@@ -1,4 +1,4 @@
-defmodule AshgraphqlReproduce do
+defmodule AshBugReproduce do
   @moduledoc """
   Documentation for `AshgraphqlReproduce`.
   """

@@ -1,38 +1,28 @@
-defmodule AshgraphqlReproduceTest do
+defmodule AshBugReproduceTest do
   use ExUnit.Case
-  doctest AshgraphqlReproduce
 
-  defmodule TestResource do
-    use Coinbits.Resource,
-      data_layer: AshPostgres.DataLayer,
-      extensions: [
-        AshGraphql.Resource
-      ]
-
-    actions do
-      defaults [:create, :read]
-
-      update :reset_type do
-      end
-    end
-
-    attributes do
-      uuid_primary_key(:id)
-
-      attribute :type, :string, public?: true
-
-      timestamps()
-    end
-
-    graphql do
-      type :test
-
-      mutations do
-        update :reset_type, :reset_type
-      end
-    end
-  end
+  alias AshBugReproduce.Resources.Test
 
   test "fails to update updated_at during bulk_update" do
+    record = Ash.Seed.seed!(Test, %{type: :here})
+    %{updated_at: updated_at} = record
+
+    AshBugReproduce.Repo.transaction(fn ->
+      Ash.bulk_update!([record], :reset_type, %{},
+        resource: CybridCustodialAccount,
+        return_errors?: true,
+        strategy: :stream
+      )
+
+      assert %{updated_at: ^updated_at} =
+               Ash.reload!(record)
+
+      AshBugReproduce.Repo.rollback(:ok)
+    end)
+
+    %{updated_at: new_updated_at} =
+      Test.reset_type!(record, authorize?: false)
+
+    assert updated_at != new_updated_at
   end
 end
