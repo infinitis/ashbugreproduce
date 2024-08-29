@@ -1,7 +1,7 @@
 defmodule AshBugReproduce.Resources.Test do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    domain: nil
+    domain: AshBugReproduce.Test
 
   actions do
     defaults([:create, :read])
