@@ -30,8 +30,7 @@ defmodule AshBugReproduceTest do
       AshBugReproduce.Repo.rollback(:ok)
     end)
 
-    %{updated_at: new_updated_at} =
-      record |> Ash.Changeset.for_update(:reset_type, %{}, domain: AshBugReproduce.Test) |> Ash.update!(domain: AshBugReproduce.Test)
+    %{updated_at: new_updated_at} = Test.reset_type!(record)
 
     assert updated_at != new_updated_at
   end
