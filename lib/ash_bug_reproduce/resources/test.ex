@@ -21,6 +21,14 @@ defmodule AshBugReproduce.Resources.Test do
     timestamps()
   end
 
+  calculations do
+    calculate :balance, :decimal, expr(
+      cond do
+        true -> related_test.balance
+      end
+    )
+  end
+
   postgres do
     table("tests")
 
@@ -29,5 +37,12 @@ defmodule AshBugReproduce.Resources.Test do
 
   code_interface do
     define(:reset_type)
+  end
+
+  relationships do
+    has_one :related_test, AshBugReproduce.Resources.Test2 do
+      public? false
+      destination_attribute :test_id
+    end
   end
 end

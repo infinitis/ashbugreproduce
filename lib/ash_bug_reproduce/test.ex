@@ -7,5 +7,6 @@ defmodule AshBugReproduce.Test do
 
   resources do
     resource(AshBugReproduce.Resources.Test)
+    resource(AshBugReproduce.Resources.Test2)
   end
 end
