@@ -22,8 +22,8 @@ defmodule AshBugReproduce.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, "~> 3.2.6"},
-      {:ash_postgres, "~> 2.0.8"}
+      {:ash, "~> 3.4.0"},
+      {:ash_postgres, "~> 2.4.21"}
     ]
   end
 end
